@@ -1,6 +1,9 @@
-
+import re
 raw_result = input("Please input the result of Dart: ")
 score = 0
+first_try = []
+second_try = []
+third_try = []
 """
 RULES:
 다트 게임은 총 3번의 기회로 구성된다.
@@ -17,11 +20,10 @@ Single(S), Double(D), Triple(T)은 점수마다 하나씩 존재한다.
 result = list(raw_result)
 print(result)
 #세번 던진 결과를 각각 저장한다
-if(result[2].is_integer()): #만약 첫 점수가 10이면 10S1S1S
-	if()
-else:
 
 
-first_try = ""
-second_try = ""
-third_try = ""
+
+
+result = re.compile().split(raw_result)
+print(result)
+
