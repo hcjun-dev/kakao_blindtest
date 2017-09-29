@@ -7,6 +7,8 @@ arr1, arr2는 길이 n인 정수 배열로 주어진다
 0<= x <=2^n-1을 만족한다
 
 """
+
+#TODO array only can store upto certain value
 dimension_size = int(input("Enter your desired dimension: "))
 print("n = " + str(dimension_size))
 
