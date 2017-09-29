@@ -21,7 +21,6 @@ while i < dimension_size:
 	temp_input = int(input("Put " + str(i) + "th number for arr1: "))
 	arr1.append(temp_input)
 	i += 1
-array_length = len(arr1)
 
 i = 0
 while i < dimension_size:
