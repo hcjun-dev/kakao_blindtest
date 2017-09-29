@@ -1,9 +1,5 @@
 import re
-raw_result = input("Please input the result of Dart: ")
-score = 0
-first_try = []
-second_try = []
-third_try = []
+
 """
 RULES:
 다트 게임은 총 3번의 기회로 구성된다.
@@ -17,13 +13,65 @@ Single(S), Double(D), Triple(T)은 점수마다 하나씩 존재한다.
 스타상(*), 아차상(#)은 점수마다 둘 중 하나만 존재할 수 있으며, 존재하지 않을 수도 있다.
 
 """
-result = list(raw_result)
-print(result)
-#세번 던진 결과를 각각 저장한다
 
+def main():
+	raw_result = input("Please input the result of Dart: ")
+	score = 0
+	temp_list = []
+	result = list(raw_result)
+	print(result)
 
+	#세번 던진 결과를 각각 저장한다
 
+	for i in range(3):
+		if(result[1].isdigit()): #둘째 인덱스가 숫자일때 10
+			temp_list.append(10)
+			temp_list.append(result[2]) #S/D/T
+			del result[0:1]
 
-result = re.compile().split(raw_result)
-print(result)
+		else:
+			temp_list.append(int(result[0]))
+			temp_list.append(result[1]) #S/D/T
+			del result[0]
+		del result[0]
+	try:
+		if(result[0] == "#" or result[0] == "*"):
+			temp_list.append(result[0])
+			del result[0]
+	except (IndexError):
+			# TODO 효과가 중첩되는 것
 
+		score = score + calculate(temp_list)
+		print("after one round in result main", end="")
+		print(result)
+		print(score)
+		temp_list[:] = [] # clear temp_list
+
+	print("The final Score is: ", end="")
+	print(score)
+
+def calculate(trial):
+	score = 0
+
+	print("trial in def", end=" ")
+	print(trial)
+	if(trial[1]=="S"):
+		score = trial[0] ** 1
+	elif(trial[1] == "D"):
+		score = trial[0] ** 2
+		print("trial0", end=" ")
+		print(trial[0])
+	elif(trial[1] == "T"):
+		score = trial[0] ** 3
+	else:
+		return "ERROR"
+
+	#if there is * or #
+	if(len(trial) >= 3):
+		if(trial[2] == "*"):
+			score = score * 2
+		elif(trial[2] == "#"):
+			score = score * -1
+	return score
+
+main()
