@@ -1,5 +1,3 @@
-import re
-
 """
 RULES:
 다트 게임은 총 3번의 기회로 구성된다.
@@ -11,67 +9,55 @@ RULES:
 스타상(*)의 효과는 아차상(#)의 효과와 중첩될 수 있다. 이 경우 중첩된 아차상(#)의 점수는 -2배가 된다. (예제 5번 참고)
 Single(S), Double(D), Triple(T)은 점수마다 하나씩 존재한다.
 스타상(*), 아차상(#)은 점수마다 둘 중 하나만 존재할 수 있으며, 존재하지 않을 수도 있다.
-
 """
+
 
 def main():
 	raw_result = input("Please input the result of Dart: ")
-	score = 0
-	temp_list = []
+	score = []
+	final_score = 0
 	result = list(raw_result)
-	print(result)
 
-	#세번 던진 결과를 각각 저장한다
+	# 세번 던진 결과를 각각 저장한다
 
-	for i in range(3):
-		if(result[1].isdigit()): #둘째 인덱스가 숫자일때 10
-			temp_list.append(10)
-			temp_list.append(result[2]) #S/D/T
+	for i in range(3):  # 3 라운드 진행
+		# 첫째 숫자 저장
+		if (result[1].isdigit()):  # 첫째 숫자가 10일때
+			score_temp = 10
 			del result[0:1]
-
 		else:
-			temp_list.append(int(result[0]))
-			temp_list.append(result[1]) #S/D/T
+			score_temp = int(result[0])
 			del result[0]
+
+		# 둘째 보너스 합산 저장
+		if (result[0] == "S"):
+			score_temp = score_temp ** 1
+		elif (result[0] == "D"):
+			score_temp = score_temp ** 2
+		elif (result[0] == "T"):
+			score_temp = score_temp ** 3
 		del result[0]
-	try:
-		if(result[0] == "#" or result[0] == "*"):
-			temp_list.append(result[0])
-			del result[0]
-	except (IndexError):
-			# TODO 효과가 중첩되는 것
 
-		score = score + calculate(temp_list)
-		print("after one round in result main", end="")
-		print(result)
-		print(score)
-		temp_list[:] = [] # clear temp_list
+		#셋째 옵션 계산 - # (이번턴만 마이너스)
+		if (len(result) != 0):
+			if (result[0] == "#"):
+				score_temp = score_temp * (-1)
+				del result[0]
+		score.append(score_temp)
+		#셋째 옵션 계산 - * (이번턴과 바로 전턴 두배)
+		if (len(result) != 0):
+			if (result[0] == "*"):
+				if (len(score) == 1):
+					score[i] *= 2
+				else:
+					score[i - 1] *= 2
+					score[i] *= 2
+				del result[0]
 
-	print("The final Score is: ", end="")
-	print(score)
+	for each in score:  # 총 점수 합산
+		final_score += each
 
-def calculate(trial):
-	score = 0
+	print(final_score)
 
-	print("trial in def", end=" ")
-	print(trial)
-	if(trial[1]=="S"):
-		score = trial[0] ** 1
-	elif(trial[1] == "D"):
-		score = trial[0] ** 2
-		print("trial0", end=" ")
-		print(trial[0])
-	elif(trial[1] == "T"):
-		score = trial[0] ** 3
-	else:
-		return "ERROR"
-
-	#if there is * or #
-	if(len(trial) >= 3):
-		if(trial[2] == "*"):
-			score = score * 2
-		elif(trial[2] == "#"):
-			score = score * -1
-	return score
 
 main()
