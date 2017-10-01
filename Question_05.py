@@ -12,6 +12,7 @@
 
 import collections
 
+
 def main():
 	str1 = input("Input str1: ").lower()
 	str2 = input("Input str2: ").lower()
